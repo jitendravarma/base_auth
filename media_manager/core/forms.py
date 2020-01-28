@@ -22,8 +22,8 @@ class LoginForm(forms.Form):
 
         if not (email or password):
             msg = "Email and password is required"
-            self._errors["password"] = self.error_class([msg])
-            del self._errors["email"]
+            self._errors["password"] = self.error_class(["Password is required"])
+            self._errors["email"] = self.error_class(["Email is required."])
             return self.cleaned_data
 
         if not password:
@@ -38,6 +38,7 @@ class LoginForm(forms.Form):
 
         user_auth = EmailModelBackend()
         user = user_auth.authenticate(username=email, password=password)
+
         if user is None:
             msg = "Email or password is incorrect"
             self._errors["password"] = self.error_class([msg])
@@ -50,22 +51,12 @@ class LoginForm(forms.Form):
 
         return self.cleaned_data
 
+
 class SignUpForm(forms.ModelForm):
     """
     SignUpForm for user sign up, it will handle validation as given below
     """
 
-    usertype = forms.CharField(label="usertype")
-    firstname = forms.CharField(
-        label="firstname",
-        max_length=25,
-        error_messages={"required": "Please enter your first name."},
-    )
-    lastname = forms.CharField(
-        label="lastname",
-        max_length=25,
-        error_messages={"required": "Please enter your last name."},
-    )
     password = forms.CharField(
         widget=forms.PasswordInput(),
         label="password",
@@ -84,21 +75,16 @@ class SignUpForm(forms.ModelForm):
 
     class Meta:
         model = BaseUserProfile
-        fields = ("first_name", "last_name", "password", "email")
+        fields = ("password", "email")
 
     def save(self):
-        email = self.cleaned_data["email"]
         base_user = super(SignUpForm, self).save(commit=False)
         base_user.set_password(self.cleaned_data["password"])
-        first_name = self.cleaned_data["firstname"]
-        last_name = self.cleaned_data["lastname"]
-        usertype = self.cleaned_data["usertype"]
-        base_user.first_name = first_name
-        base_user.last_name = last_name
-        base_user.username = first_name
-        base_user.user_type = usertype
-        base_user.is_active = False
+        base_user.username = self.cleaned_data["email"]
+        base_user.email = self.cleaned_data["email"]
+        base_user.is_active = True
         base_user.save()
+        print(base_user)
         return self.cleaned_data
 
     def clean(self):
@@ -107,6 +93,12 @@ class SignUpForm(forms.ModelForm):
         confirm_password = cleaned_data.get("confirm_password")
         password = cleaned_data.get("password")
         user = BaseUserProfile.objects.filter(email__iexact=email)
+
+        if user:
+            msg = "User with the same email already exists!"
+            self._errors["email"] = self.error_class([msg])
+            return self.cleaned_data
+
         if not email:
             msg = "Email address required"
             self._errors["email"] = self.error_class([msg])
@@ -115,4 +107,3 @@ class SignUpForm(forms.ModelForm):
         if password != confirm_password:
             msg = "Both passwords do not match"
             self._errors["password"] = self.error_class([msg])
-

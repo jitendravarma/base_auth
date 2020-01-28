@@ -17,8 +17,11 @@ from django.contrib import admin
 from django.urls import path
 from django.conf.urls import include, url
 
+from core.views import LoginView
+
 urlpatterns = [
-#    url(r"^api/", include("api.urls")),
-#    url(r"^core/", include("core.urls")),
+    #    url(r"^api/", include("api.urls")),
+    url(r'^$', LoginView.as_view(), name='index-view'),
+    url(r"^", include("core.urls")),
     path('admin/', admin.site.urls),
 ]

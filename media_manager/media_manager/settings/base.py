@@ -37,6 +37,7 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
+    'django.contrib.humanize',
     'rest_framework',
     'core',
 ]
@@ -56,7 +57,9 @@ ROOT_URLCONF = 'media_manager.urls'
 TEMPLATES = [
     {
         'BACKEND': 'django.template.backends.django.DjangoTemplates',
-        'DIRS': [],
+        'DIRS': [
+            os.path.join(BASE_DIR, '..', 'templates'),
+        ],
         'APP_DIRS': True,
         'OPTIONS': {
             'context_processors': [
@@ -118,4 +121,6 @@ STATIC_ROOT = os.path.join(BASE_DIR, "static")
 
 SEAFILE_URL = "http://0.0.0.0//"
 
-AUTH_USER_MODEL = "core.BaseUserProfile" 
+AUTH_USER_MODEL = "core.BaseUserProfile"
+
+LOGIN_URL = '/login/'
