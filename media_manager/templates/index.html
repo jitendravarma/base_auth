@@ -24,7 +24,7 @@
 	<body>
         <div class="body-section border">
             <nav class="navbar navbar-light bg-light">
-                <span class="navbar-brand mb-0 h1 mr-auto">Media Manager</span>
+                <span class="navbar-brand mb-0 h1 ml-auto">Media Manager</span>
             </nav>
             <div class="container-fluid">
                 
@@ -35,11 +35,11 @@
             <div class="bg-light border-right" id="sidebar-wrapper">
                 <!-- <div class="sidebar-heading">Start Bootstrap </div> -->
                 <div class="list-group list-group-flush">
-                <a href="#" class="list-group-item list-group-item-action bg-light">Dashboard</a>
-                <a href="#" class="list-group-item list-group-item-action bg-light">Profile</a>
-                <a href="#" class="list-group-item list-group-item-action bg-light">Manage</a>
-                <a href="#" class="list-group-item list-group-item-action bg-light">Logout</a>
+                <a href="{% url 'home-view' %}" class="list-group-item list-group-item-action bg-light">Dashboard</a>
+                <a href="{% url 'profile-view' %}" class="list-group-item list-group-item-action bg-light">Profile</a>
+                <a href="{% url 'moods-view' %}" class="list-group-item list-group-item-action bg-light">Manage Moods</a>
                 <a href="#" class="list-group-item list-group-item-action bg-light">Status</a>
+                <a href="{% url 'logout-view' %}" class="list-group-item list-group-item-action bg-light">Logout</a>
                 </div>
             </div>
             <!-- /#sidebar-wrapper -->

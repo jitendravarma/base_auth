@@ -117,4 +117,31 @@ class IndexView(LoginRequiredMixin, TemplateView):
 
     def get_context_data(self, **kwargs):
         context = super(IndexView, self).get_context_data(**kwargs)
+        context['dashboard_page'] = "active"
+        return context
+
+
+class ProfileView(LoginRequiredMixin, TemplateView):
+    """
+    List view for profiles.
+    """
+
+    template_name = 'frontend/profile.html'
+
+    def get_context_data(self, **kwargs):
+        context = super(ProfileView, self).get_context_data(**kwargs)
+        context['profile_page'] = "active"
+        return context
+
+
+class MoodsView(LoginRequiredMixin, TemplateView):
+    """
+    List view for all profiles moods.
+    """
+
+    template_name = 'frontend/moods.html'
+
+    def get_context_data(self, **kwargs):
+        context = super(MoodsView, self).get_context_data(**kwargs)
+        context['moods_page'] = "active"
         return context

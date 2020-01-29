@@ -1,9 +1,8 @@
 from django.conf.urls import url
 from django.contrib.auth import logout
 
-from .views import (IndexView, LoginView, LogOutView, SignupView)
-
-# app_name = 'core'
+from .views import (IndexView, LoginView, LogOutView, 
+                   MoodsView, ProfileView, SignupView)
 
 
 urlpatterns = [
@@ -12,5 +11,7 @@ urlpatterns = [
     url(r'^signup/$', SignupView.as_view(), name="signup-view"),
     url(r'^logout/$', LogOutView.as_view(), name="logout-view"),
 
-    url(r'^home/$', IndexView.as_view(), name="index-view"),
+    url(r'^home/$', IndexView.as_view(), name="home-view"),
+    url(r'^profile/$', ProfileView.as_view(), name="profile-view"),
+    url(r'^moods/$', MoodsView.as_view(), name="moods-view"),
 ]
