@@ -3,8 +3,8 @@
 {% block title %} Login {% endblock title %}
 
 {% block content %}
-<div class="container">
-    <div class="col-md-4 ml-auto m-3">
+<div class="row justify-content-center">
+    <div class="col-md-4 m-4 p-3 border">
         <center><h4>Sign Up</h4></center>
         <form action="" method="POST">
             {% csrf_token %}
@@ -31,8 +31,8 @@
             </div>
             <div class="center">
                 <button type="submit" class="btn btn-primary">Submit</button>
-                <span><a href="{% url 'login-view' %}" class=""><p class="text-primary">Login?</p></a></span>
             </div>
+            <span><a href="{% url 'login-view' %}" class=""><p class="text-primary">Already have an account ? Login</p></a></span>
         </form>
     </div>
 </div>
