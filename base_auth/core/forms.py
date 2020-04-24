@@ -1,3 +1,5 @@
+import re
+
 from django import forms
 from django.conf import settings
 
@@ -21,7 +23,7 @@ class LoginForm(forms.Form):
         password = cleaned_data.get("password")
 
         if not (email or password):
-            msg = "Email and password is required"
+            msg = "Email and password are required"
             self._errors["password"] = self.error_class(["Password is required"])
             self._errors["email"] = self.error_class(["Email is required."])
             return self.cleaned_data
@@ -107,3 +109,37 @@ class SignUpForm(forms.ModelForm):
         if password != confirm_password:
             msg = "Both passwords do not match"
             self._errors["password"] = self.error_class([msg])
+
+
+class ProfileForm(forms.Form):
+    """
+    This form is used to handle profile submission
+    """
+
+    email = forms.CharField()
+    phone_no = forms.CharField()
+    message = forms.CharField()
+    full_name = forms.CharField()
+
+    def clean(self):
+        cleaned_data = super(ProfileForm, self).clean()
+        email = cleaned_data.get("email")
+        message = cleaned_data.get("message")
+        full_name = cleaned_data.get("full_name")
+        phone_no = cleaned_data.get("phone_no")
+
+        if not (email):
+            self._errors["email"] = self.error_class(["Email is required."])
+
+        if not message:
+            self._errors["message"] = self.error_class(["Message is required"])
+
+        if not full_name:
+            self._errors["full_name"] = self.error_class(["Full name is required"])
+
+        if not phone_no:
+            self._errors["phone_no"] = self.error_class(["Phone no is required"])
+
+        if phone_no and not re.match(r"^(?:(?:\+|0{0,2})91(\s*[\-]\s*)?|[0]?)?[789]\d{9}$", phone_no):
+            self._errors["phone_no"] = self.error_class(["Please enter valid phone no eg. +91-9292923233 or 9292923233"])
+        return self.cleaned_data

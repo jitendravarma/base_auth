@@ -3,6 +3,54 @@
 {% block title %} Dashboard {% endblock title %}
 
 {% block main-content %}
-    <h3 class="mt-4">Dashboard</h3>
-    <p>Lorem ipsum dolor sit amet consectetur adipisicing elit. Nesciunt incidunt exercitationem eaque, voluptates similique unde, aliquam eveniet dolores distinctio nisi at repellendus illo possimus eos? Aliquam cum earum eveniet exercitationem.</p>
+<h3 class="mt-4">Details</h3>
+<form action="" method="POST" class="col-6">
+    {% csrf_token %}
+    {% if messages %}
+    {% for message in messages %}
+    <div class="alert alert-success alert-row-error alert-dismissible" role="alert">
+        <strong>Alert!</strong>
+        <span class="error-text">{{ message }}</span>
+        <button type="button" class="hide-Alert close" aria-label="Close">
+            <span class="hide-error-message">&times;</span>
+        </button>
+    </div>
+    {% endfor %}
+    {% endif %}
+    <div class="form-group">
+        <label for="exampleInputPassword1">Full Name</label>
+        <input type="text" class="form-control" name="full_name" placeholder="John Smith Doe"
+            value="{{form.cleaned_data.full_name}}">
+        {% if form.full_name.errors %}
+        <small class="form-text text-danger">{{form.full_name.errors.0}}</small>
+        {% endif %}
+    </div>
+    <div class="form-group">
+        <label for="exampleInputPassword1">Phone No</label>
+        <input type="text" class="form-control" name="phone_no" placeholder="+91 9922322212"
+            value="{{form.cleaned_data.phone_no}}">
+        {% if form.phone_no.errors %}
+        <small class="form-text text-danger">{{form.phone_no.errors.0}}</small>
+        {% endif %}
+    </div>
+    <div class="form-group">
+        <label for="exampleInputEmail1">Email</label>
+        <input type="email" class="form-control" name="email" aria-describedby="emailHelp" placeholder="Enter email"
+            value="{{form.cleaned_data.email}}">
+        {% if form.email.errors %}
+        <small class="form-text text-danger">{{ form.email.errors.0 }}</small>
+        {% endif %}
+    </div>
+    <div class="form-group">
+        <label for="exampleInputPassword1">Message</label>
+        <textarea type="text" class="form-control" name="message"
+            placeholder="Text message here..">{{form.cleaned_data.message}}</textarea>
+        {% if form.message.errors %}
+        <small class="form-text text-danger">{{form.message.errors.0}}</small>
+        {% endif %}
+    </div>
+    <div class="center">
+        <button type="submit" class="btn btn-primary">Submit</button>
+    </div>
+</form>
 {% endblock main-content %}

@@ -1,6 +1,7 @@
 import json
 
 from django.urls import reverse
+from django.contrib import messages
 from django.contrib.auth import login, logout
 from django.contrib.auth.mixins import LoginRequiredMixin
 from django.shortcuts import (render, render_to_response)
@@ -9,7 +10,7 @@ from django.views.generic import (RedirectView, TemplateView, FormView)
 
 from core.backends import EmailModelBackend
 
-from .forms import LoginForm, SignUpForm
+from .forms import LoginForm, SignUpForm, ProfileForm
 from .mixins import LoggedInUserRedirectMixin
 
 # Create your views here.
@@ -108,17 +109,29 @@ class LogOutView(RedirectView):
         return url
 
 
-class IndexView(LoginRequiredMixin, TemplateView):
+class IndexView(LoginRequiredMixin, FormView):
     """
     Home view for user after redirection
     """
-
+    form_class = ProfileForm
     template_name = 'frontend/dashboard.html'
 
     def get_context_data(self, **kwargs):
         context = super(IndexView, self).get_context_data(**kwargs)
         context['dashboard_page'] = "active"
         return context
+
+    def post(self, request, *args, **kwargs):
+        form = ProfileForm(request.POST)
+        if not form.is_valid():
+            return render_to_response(
+                self.template_name,
+                {
+                    'form': form, "csrf_token": form.data['csrfmiddlewaretoken'],
+                }
+            )
+        messages.success(request, 'Form submitted successfully!')
+        return HttpResponseRedirect(reverse('index-view'))
 
 
 class ProfileView(LoginRequiredMixin, TemplateView):
