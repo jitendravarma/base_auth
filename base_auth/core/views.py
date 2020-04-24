@@ -91,10 +91,6 @@ class SignupView(LoggedInUserRedirectMixin, FormView):
                 request, context=context, template_name=self.template_name)
         else:
             form.save()
-            password = form.data['email']
-            user_auth = EmailModelBackend()
-            user = user_auth.authenticate(username=email, password=password)
-            login(self.request, user)
             return HttpResponseRedirect(reverse('index-view'))
 
 
